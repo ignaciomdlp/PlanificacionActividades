@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        System.out.println("Hola!:D");
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
         ArrayList<String> listaParticipantesExistentes = new ArrayList<String>();
         BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
