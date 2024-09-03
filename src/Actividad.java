@@ -3,26 +3,26 @@ import java.util.*;
 public class Actividad {
     private String nombreActividad;
     private String nombreEncargado;
-    private ArrayList<String> listaParticipantes;
+    private ArrayList<String> clavesParticipantes;
 
     public Actividad(String entradaNombre, String entradaEncargado) {
         nombreActividad = entradaNombre;
         nombreEncargado = entradaEncargado;
-        listaParticipantes = new ArrayList<String>();
+        clavesParticipantes = new ArrayList<>();
     }
 
     public Actividad(String entradaNombre) {
         nombreActividad = entradaNombre;
         nombreEncargado = "N/A";
-        listaParticipantes = new ArrayList<String>();
+        clavesParticipantes = new ArrayList<>();
     }
 
     public void mostrarInfo() {
         System.out.println("Actividad: " + nombreActividad);
         System.out.println("Encargado: " + nombreEncargado);
-        if (!listaParticipantes.isEmpty()) {
+        if (!clavesParticipantes.isEmpty()) {
             System.out.println("Participantes:");
-            for (String participante : listaParticipantes) {
+            for (String participante : clavesParticipantes) {
                 System.out.println(participante);
             }
         } else {
@@ -42,7 +42,7 @@ public class Actividad {
         this.nombreEncargado = nombreEncargado;
     }
 
-    public void addParticipante(String participante) {
-        listaParticipantes.add(participante);
+    public void addParticipante(String clave) {
+        clavesParticipantes.add(clave);
     }
 }

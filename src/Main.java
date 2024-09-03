@@ -4,10 +4,11 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("pantrucas");
-        System.out.println("prueba commit 2");
-        ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
-        ArrayList<String> listaParticipantesExistentes = new ArrayList<String>();
+        ArrayList<Actividad> listaActividades = new ArrayList<>();
+        HashMap<String, Persona> listaPersonas = new HashMap<>();
+        
+        //Lectura de Actividades y Personas.
+        
         BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
 
         int opcionMPrincipal = 0;
@@ -29,7 +30,7 @@ public class Main {
                         opcionMGestion = Integer.parseInt(scanner.readLine());
                         switch (opcionMGestion) {
                             case 1 -> Funciones.addActividad(scanner, listaActividades);
-                            case 2 -> Funciones.modActividad(scanner, listaActividades, listaParticipantesExistentes);
+                            case 2 -> Funciones.modActividad(scanner, listaActividades, listaPersonas);
                             case 3 -> Funciones.delActividad(scanner, listaActividades);
                             case 4 -> System.out.println("Saliendo del menú de gestión...");
                             default -> System.out.println("Opción inválida.");

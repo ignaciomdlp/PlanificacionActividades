@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Funciones {
 
@@ -83,15 +84,15 @@ public class Funciones {
         }
     }
 
-    public static void modActividad(BufferedReader lector, ArrayList<Actividad> lista, ArrayList<String> parExistentes) throws IOException {
-        listarActividades(lista);
-        if (lista.isEmpty()) return;
+    public static void modActividad(BufferedReader lector, ArrayList<Actividad> listaAct, HashMap parExistentes) throws IOException {
+        listarActividades(listaAct);
+        if (listaAct.isEmpty()) return;
 
         System.out.println("Seleccione el número de la actividad que desea modificar:");
         int index = Integer.parseInt(lector.readLine()) - 1;
 
-        if (index >= 0 && index < lista.size()) {
-            Actividad act = lista.get(index);
+        if (index >= 0 && index < listaAct.size()) {
+            Actividad act = listaAct.get(index);
             System.out.println("Actividad seleccionada: " + act.getActName());
             System.out.println("1. Cambiar nombre\n2. Cambiar encargado\n3. Añadir participante\n4. Volver");
             int opcion = Integer.parseInt(lector.readLine());
@@ -107,8 +108,12 @@ public class Funciones {
                 }
                 case 3 -> {
                     System.out.println("Ingrese el nombre del participante:");
-                    String participante = lector.readLine();
-                    act.addParticipante(participante);
+                    String nombreParticipante = lector.readLine();
+                    String rutParticipante = lector.readLine();
+                    Persona P0 = new Persona(nombreParticipante, rutParticipante);
+                    parExistentes.put(rutParticipante, P0);
+                    act.addParticipante(rutParticipante);
+                    System.out.println("Participante añadido con éxito");
                 }
                 default -> System.out.println("Opción inválida.");
             }
