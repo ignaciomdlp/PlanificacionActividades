@@ -37,12 +37,24 @@ public class Actividad {
     public void setNombreActividad(String nombreActividad) {
         this.nombreActividad = nombreActividad;
     }
+    
+    public String getNombreEncargado() {
+        return nombreEncargado;
+    }
 
     public void setNombreEncargado(String nombreEncargado) {
         this.nombreEncargado = nombreEncargado;
     }
+    
+    public void delEncargado(){
+        this.nombreEncargado = "N/A";
+    }
 
     public void addParticipante(String clave) {
         clavesParticipantes.add(clave);
+    }
+    
+    public void delPartipante(String clave){
+        clavesParticipantes.remove(clave);
     }
 }

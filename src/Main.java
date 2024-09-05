@@ -5,7 +5,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         ArrayList<Actividad> listaActividades = new ArrayList<>();
-        HashMap<String, Persona> listaPersonas = new HashMap<>();
+        HashMap<String, Persona> listaPersonas = new HashMap<>(); //cambiar variable listaPersonas por mapaPersonas¿?
         
         //Lectura de Actividades y Personas.
         
@@ -29,7 +29,7 @@ public class Main {
 
                         opcionMGestion = Integer.parseInt(scanner.readLine());
                         switch (opcionMGestion) {
-                            case 1 -> Funciones.addActividad(scanner, listaActividades);
+                            case 1 -> Funciones.addActividad(scanner, listaActividades, listaPersonas);
                             case 2 -> Funciones.modActividad(scanner, listaActividades, listaPersonas);
                             case 3 -> Funciones.delActividad(scanner, listaActividades);
                             case 4 -> System.out.println("Saliendo del menú de gestión...");
