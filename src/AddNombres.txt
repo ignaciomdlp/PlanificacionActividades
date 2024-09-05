@@ -1,0 +1,10 @@
+Juan Pérez, 12345678-9
+María López, 98765432-1
+Pedro González, 45678901-2
+Laura Ramírez, 23456789-0
+Ana Fernández, 11223344-5
+Jorge Morales, 66778899-6
+Silvia Herrera, 55667788-7
+Daniel Fuentes, 33445566-8
+Gabriela Soto, 22334455-9
+Roberto Díaz, 99887766-5
