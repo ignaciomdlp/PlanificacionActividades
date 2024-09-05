@@ -10,15 +10,17 @@ public class Funciones {
         System.out.flush();
     }
 
-    public static void listarActividades(ArrayList<Actividad> lista) {
-        if (lista.isEmpty()) {
-            System.out.println("No hay actividades registradas.");
-        } else {
-            for (int i = 0; i < lista.size(); i++) {
-                System.out.println((i + 1) + ". " + lista.get(i).getActName());
-            }
+public static void listarActividades(ArrayList<Actividad> lista) {
+    if (lista.isEmpty()) {
+        System.out.println("No hay actividades registradas.");
+    } else {
+        for (int i = 0; i < lista.size(); i++) {
+            Actividad actividad = lista.get(i);
+            System.out.println((i + 1) + ". " + actividad.getActName());
+            actividad.mostrarInfo(); // Utiliza el método mostrarInfo() para imprimir detalles
         }
     }
+}
 
     public static void addActividad(BufferedReader lector, ArrayList<Actividad> lista) throws IOException {
         limpiarConsola();
@@ -68,7 +70,6 @@ public class Funciones {
         ACTX.mostrarInfo();
     }
 
-
     public static void delActividad(BufferedReader lector, ArrayList<Actividad> lista) throws IOException {
         listarActividades(lista);
         if (lista.isEmpty()) return;
@@ -84,7 +85,7 @@ public class Funciones {
         }
     }
 
-    public static void modActividad(BufferedReader lector, ArrayList<Actividad> listaAct, HashMap parExistentes) throws IOException {
+    public static void modActividad(BufferedReader lector, ArrayList<Actividad> listaAct, HashMap<String, Persona> parExistentes) throws IOException {
         listarActividades(listaAct);
         if (listaAct.isEmpty()) return;
 
@@ -117,6 +118,8 @@ public class Funciones {
                 }
                 default -> System.out.println("Opción inválida.");
             }
+            // Muestra la información actualizada
+            act.mostrarInfo();
         } else {
             System.out.println("Número inválido.");
         }
