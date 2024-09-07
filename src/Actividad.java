@@ -46,7 +46,7 @@ public final class Actividad {
         return null;
     }
     
-    public ArrayList getParticipantes() {
+    public ArrayList<Persona> getParticipantes() {
         return participantes;
     }
 
