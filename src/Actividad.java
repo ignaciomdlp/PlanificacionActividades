@@ -1,32 +1,28 @@
 import java.util.*;
 
-public class Actividad {
+public final class Actividad {
     private String nombreActividad;
-    private String nombreEncargado;
-    private ArrayList<String> clavesParticipantes;
+    private ArrayList<Persona> participantes;
 
-    public Actividad(String entradaNombre, String entradaEncargado) {
-        nombreActividad = entradaNombre;
-        nombreEncargado = entradaEncargado;
-        clavesParticipantes = new ArrayList<>();
+    public Actividad(String nombreActividad, Persona encargado) {
+        this.nombreActividad = nombreActividad;
+        setEncargado(encargado);
+        this.participantes = new ArrayList<>();
     }
 
-    public Actividad(String entradaNombre) {
-        nombreActividad = entradaNombre;
-        nombreEncargado = "N/A";
-        clavesParticipantes = new ArrayList<>();
+    public Actividad(String nombreActividad) {
+        this.nombreActividad = nombreActividad;
+        this.participantes = new ArrayList<>();
     }
 
     public void mostrarInfo() {
         System.out.println("Actividad: " + nombreActividad);
-        System.out.println("Encargado: " + nombreEncargado);
-        if (!clavesParticipantes.isEmpty()) {
-            System.out.println("Participantes:");
-            for (String participante : clavesParticipantes) {
-                System.out.println(participante);
+        System.out.println("Encargado: " + (getEncargado() != null ? getEncargado().getName() : "N/A"));
+        System.out.println("Participantes:");
+        for (Persona p : participantes) {
+            if (!"Encargado".equals(p.getCargo())) {
+                System.out.println("- " + p.getName() + " (" + p.getCargo() + ")");
             }
-        } else {
-            System.out.println("No hay participantes registrados.");
         }
     }
 
@@ -34,27 +30,43 @@ public class Actividad {
         return nombreActividad;
     }
 
-    public void setNombreActividad(String nombreActividad) {
+    public void setNombreActividad(String nombreAntiguo, String nombreActividad, HashMap<String, Actividad> mapa) {
         this.nombreActividad = nombreActividad;
+        Actividad ACT = mapa.get(nombreAntiguo);
+        mapa.remove(nombreAntiguo);
+        mapa.put(nombreActividad, ACT);
     }
     
-    public String getNombreEncargado() {
-        return nombreEncargado;
+    public Persona getEncargado() {
+        for (Persona p : participantes) {
+            if ("Encargado".equals(p.getCargo())) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList getParticipantes() {
+        return participantes;
     }
 
-    public void setNombreEncargado(String nombreEncargado) {
-        this.nombreEncargado = nombreEncargado;
+    public void setEncargado(Persona persona) {
+        persona.setCargo("Encargado");
+        if (!participantes.contains(persona)){
+            participantes.add(persona);
+        }
     }
     
-    public void delEncargado(){
-        this.nombreEncargado = "N/A";
+    public void delEncargado(Persona persona){
+        persona.setCargo("N/A");
+        participantes.remove(persona);
     }
 
-    public void addParticipante(String clave) {
-        clavesParticipantes.add(clave);
+    public void addParticipante(Persona persona) {
+        participantes.add(persona);
     }
     
-    public void delPartipante(String clave){
-        clavesParticipantes.remove(clave);
+    public void delPartipante(Persona persona){
+        participantes.remove(persona);
     }
 }

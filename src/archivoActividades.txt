@@ -1,0 +1,8 @@
+Curso de Introducción a la Programación;Ninguno
+Ninguno|00000000-0
+Proyecto Final de Ingeniería;Dr. Juan Pérez
+Juan Pérez|12345678-9;Pedro González|45678901-2
+Seminario de Investigación;Dra. María Gómez
+Ana Fernández|11223344-5
+Taller de Innovación Tecnológica;Dr. Carlos Reyes
+Silvia Herrera|55667788-7;Daniel Fuentes|33445566-8;Roberto Díaz|99887766-5

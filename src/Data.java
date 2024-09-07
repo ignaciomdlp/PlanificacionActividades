@@ -2,34 +2,39 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Data {
-    public static void leerDataActividad() {
+    public static void leerDataActividad(HashMap<String, Actividad> mapa) {
         InputStream inputStream = Data.class.getResourceAsStream("/archivoActividades.txt");
         
         if (inputStream != null) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
                 String linea;
-                int i = 0;
-
+                String nombreAct = null;
+                String nombreEncargado = null;
+                
                 while ((linea = br.readLine()) != null) {
                     String[] partes = linea.split(";");
-                    if (i % 2 == 0) {
+                    
+                    if (nombreAct == null) {
                         // Línea de actividad y encargado
-                        System.out.println("Actividad: " + partes[0].trim());
-                        System.out.println("Encargado: " + partes[1].trim());
+                        nombreAct = partes[0].trim();
+                        nombreEncargado = partes[1].trim();
+                        mapa.put(nombreAct, new Actividad(nombreEncargado));
                     } else {
                         // Línea de participantes
-                        System.out.print("Participantes: ");
-                        for (int j = 0; j < partes.length; j++) {
-                            System.out.print(partes[j].trim());
-                            if (j < partes.length - 1) {
-                                System.out.print(", ");
+                        Actividad actividad = mapa.get(nombreAct);
+                        if (actividad != null) {
+                            for (String participante : partes) {
+                                String[] dataPart = participante.split("|");
+                                Persona nuevoPart = new Persona(dataPart[0].trim(), dataPart[1].trim());
+                                actividad.addParticipante(nuevoPart);
                             }
                         }
-                        System.out.println();
+                        // Preparar para la próxima actividad
+                        nombreAct = null;
                     }
-                    i++;
                 }
             } catch (IOException e) {
                 System.err.println("Error al leer el archivo: " + e.getMessage());
@@ -38,4 +43,5 @@ public class Data {
             System.err.println("Archivo no encontrado.");
         }
     }
+
 }

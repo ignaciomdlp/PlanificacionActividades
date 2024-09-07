@@ -10,21 +10,19 @@ public class Funciones {
         System.out.flush();
     }
 
-    public static void listarActividades(ArrayList<Actividad> lista) {
-        if (lista.isEmpty()) {
+    public static void listarActividades(HashMap<String,Actividad> mapaActividades) {
+        if (mapaActividades.isEmpty()) {
             System.out.println("No hay actividades registradas.");
         } else {
-            for (int i = 0; i < lista.size(); i++) {
-                Actividad actividad = lista.get(i);
-                System.out.println((i + 1) + ". " + actividad.getActName());
+            for (Actividad actividad: mapaActividades.values()) {
                 actividad.mostrarInfo(); // Utiliza el método mostrarInfo() para imprimir detalles
             }
         }
     }
 
-    public static void addActividad(BufferedReader lector, ArrayList<Actividad> lista, HashMap<String, Persona> parExistentes) throws IOException {
+    public static void addActividad(BufferedReader lector, HashMap<String, Actividad> parExistentes) throws IOException {
         limpiarConsola();
-        System.out.println("Dale nombre a la Actividad:");
+        System.out.println("Ingrese un nombre para la Actividad:");
         String entradaActividad = lector.readLine();
         Actividad ACTX;
 
@@ -41,9 +39,9 @@ public class Funciones {
             String entradaEncargado = lector.readLine();
             System.out.println("Ingrese el rut del encargado:");
             String entradaRutEncargado = lector.readLine();
-            ACTX = new Actividad(entradaActividad, entradaEncargado);
             Persona P0 = new Persona(entradaEncargado, entradaRutEncargado);
-            parExistentes.put(entradaRutEncargado, P0);
+            ACTX = new Actividad(entradaActividad, P0);
+            parExistentes.put(entradaRutEncargado, ACTX);
             System.out.println("Encargado añadido con éxito");
         } else {
             ACTX = new Actividad(entradaActividad);
@@ -65,8 +63,8 @@ public class Funciones {
                 System.out.println("Ingrese el rut del participante:");
                 String rutParticipante = lector.readLine();
                 Persona P0 = new Persona(participante, rutParticipante);
-                parExistentes.put(rutParticipante, P0);
-                ACTX.addParticipante(participante);
+                parExistentes.put(rutParticipante, ACTX);
+                ACTX.addParticipante(P0);
                 System.out.println("Participante añadido con éxito");
                 
                 System.out.println("¿Deseas agregar otro participante? (Y/N)");
@@ -75,35 +73,34 @@ public class Funciones {
             }
         }
 
-        lista.add(ACTX);
+        parExistentes.put(entradaActividad, ACTX);
         System.out.println("Actividad añadida correctamente.");
         ACTX.mostrarInfo();
     }
 
-    public static void delActividad(BufferedReader lector, ArrayList<Actividad> lista) throws IOException {
-        listarActividades(lista);
-        if (lista.isEmpty()) return;
+    public static void delActividad(BufferedReader lector, HashMap<String, Actividad> parExistentes) throws IOException {
+        listarActividades(parExistentes);
+        if (parExistentes.isEmpty()) return;
 
-        System.out.println("Seleccione el número de la actividad que desea eliminar:");
-        int index = Integer.parseInt(lector.readLine()) - 1;
-
-        if (index >= 0 && index < lista.size()) {
-            lista.remove(index);
-            System.out.println("Actividad eliminada correctamente.");
-        } else {
-            System.out.println("Número inválido.");
+        System.out.println("Ingrese el nombre de la actividad que desea eliminar:");
+        String nombre = lector.readLine();
+        
+        if (parExistentes.containsKey(nombre)){
+            System.out.println("Nombre inválido.");
+        }else {
+            parExistentes.remove(nombre);
         }
     }
 
-    public static void modActividad(BufferedReader lector, ArrayList<Actividad> listaAct, HashMap<String, Persona> parExistentes) throws IOException {
-        listarActividades(listaAct);
-        if (listaAct.isEmpty()) return;
-
-        System.out.println("Seleccione el número de la actividad que desea modificar:");
-        int index = Integer.parseInt(lector.readLine()) - 1;
-
-        if (index >= 0 && index < listaAct.size()) {
-            Actividad act = listaAct.get(index);
+    public static void modActividad(BufferedReader lector, HashMap<String, Actividad> parExistentes) throws IOException {
+        listarActividades(parExistentes);
+        if (parExistentes.isEmpty()) return;
+        
+        System.out.println("\"Ingrese el nombre de la Actividad que desea modificar:");
+        String entradaActividad = lector.readLine();
+        
+        if(parExistentes.containsKey(entradaActividad)){
+            Actividad act = parExistentes.get(entradaActividad);
             System.out.println("Actividad seleccionada: " + act.getActName());
             System.out.println("1. Cambiar nombre\n2. Añadir encargado\n3. Añadir participante\n4. Eliminar personas de la actividad\n5. Volver");
             int opcion = Integer.parseInt(lector.readLine());
@@ -111,17 +108,17 @@ public class Funciones {
             switch (opcion) {
                 case 1 -> {
                     System.out.println("Ingrese el nuevo nombre de la actividad:");
-                    act.setNombreActividad(lector.readLine());
+                    act.setNombreActividad(act.getActName(),lector.readLine(), parExistentes);
                 }
                 case 2 -> {
-                    if ("N/A".equals(act.getNombreEncargado())){
+                    if ("N/A".equals(act.getEncargado().getName())){
                         System.out.println("Ingrese el nombre del nuevo encargado:");
                         String nombreEncargado = lector.readLine();
                         System.out.println("Ingrese el rut del nuevo encargado:");
                         String rutEncargado = lector.readLine();
                         Persona P0 = new Persona(nombreEncargado, rutEncargado);
-                        parExistentes.put(rutEncargado, P0);
-                        act.setNombreEncargado(nombreEncargado);
+                        parExistentes.put(rutEncargado, act);
+                        act.setEncargado(P0);
                         System.out.println("Participante añadido con éxito");
                     } else{
                         System.out.println("Ya hay un encargado, debes eliminarlo de este cargo para agregar a otra persona");
@@ -133,8 +130,8 @@ public class Funciones {
                     System.out.println("Ingrese el rut del participante:");
                     String rutParticipante = lector.readLine();
                     Persona P0 = new Persona(nombreParticipante, rutParticipante);
-                    parExistentes.put(rutParticipante, P0);
-                    act.addParticipante(nombreParticipante);
+                    parExistentes.put(rutParticipante, act);
+                    act.addParticipante(P0);
                     System.out.println("Participante añadido con éxito");
                 }
                 case 4 -> {
@@ -148,11 +145,10 @@ public class Funciones {
                             System.out.println("Ingrese el rut del encargado para eliminarlo: ");
                             String rutEncargado = lector.readLine();
                             
-                            Persona PersE = parExistentes.get(rutEncargado);
+                            Persona PersE = act.getEncargado();
                             
                             if (rutEncargado.equals(PersE.getRut())){
-                                parExistentes.remove(rutEncargado);
-                                act.delEncargado();
+                                act.delEncargado(PersE);
                                 System.out.println("El encargado ha sido eliminado");
                             } else{
                                 System.out.println("No se ha ingresado el rut correctamente...");
@@ -164,17 +160,18 @@ public class Funciones {
                             System.out.println("Ingrese el rut de este participante para eliminarlo: ");
                             String rutParticipante = lector.readLine();
                             
-                            Persona PersP = parExistentes.get(rutParticipante);
+                            ArrayList<Persona> participantes = act.getParticipantes();
+                            boolean eliminated = false;
                             
-                            if (PersP != null){
-                                if (name.equals(PersP.getName())){
-                                    parExistentes.remove(rutParticipante);
-                                    act.delPartipante(name);
-                                    System.out.println("El participante ha sido eliminado");
-                                } else{
-                                    System.out.println("Se ha ingresado el rut de otra persona");
+                            for (Persona p : participantes){
+                                if (name.equals(p.getName()) && rutParticipante.equals(p.getRut())){
+                                    act.delPartipante(p);
+                                    eliminated = true;
                                 }
-                            } else {
+                            }
+                            if (eliminated == true){
+                                System.out.println("El participante ha sido eliminado");
+                            } else{
                                 System.out.println("No se ha ingresado un rut válido...");
                             }
                         }
@@ -186,7 +183,7 @@ public class Funciones {
             // Muestra la información actualizada
             act.mostrarInfo();
         } else {
-            System.out.println("Número inválido.");
+            System.out.println("Nombre inválido.");
         }
     }
 }

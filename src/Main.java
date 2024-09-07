@@ -4,9 +4,8 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        ArrayList<Actividad> listaActividades = new ArrayList<>();
-        HashMap<String, Persona> listaPersonas = new HashMap<>(); //cambiar variable listaPersonas por mapaPersonas¿?
-        
+        HashMap<String, Actividad> mapaActividades = new HashMap<>();
+        Data.leerDataActividad(mapaActividades);
         //Lectura de Actividades y Personas.
         
         BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
@@ -19,7 +18,7 @@ public class Main {
 
             opcionMPrincipal = Integer.parseInt(scanner.readLine());
             switch (opcionMPrincipal) {
-                case 1 -> Funciones.listarActividades(listaActividades);
+                case 1 -> Funciones.listarActividades(mapaActividades);
                 case 2 -> {
                     int opcionMGestion = 0;
                     while (opcionMGestion != 4) {
@@ -29,9 +28,9 @@ public class Main {
 
                         opcionMGestion = Integer.parseInt(scanner.readLine());
                         switch (opcionMGestion) {
-                            case 1 -> Funciones.addActividad(scanner, listaActividades, listaPersonas);
-                            case 2 -> Funciones.modActividad(scanner, listaActividades, listaPersonas);
-                            case 3 -> Funciones.delActividad(scanner, listaActividades);
+                            case 1 -> Funciones.addActividad(scanner, mapaActividades);
+                            case 2 -> Funciones.modActividad(scanner, mapaActividades);
+                            case 3 -> Funciones.delActividad(scanner, mapaActividades);
                             case 4 -> System.out.println("Saliendo del menú de gestión...");
                             default -> System.out.println("Opción inválida.");
                         }
