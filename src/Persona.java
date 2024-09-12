@@ -3,14 +3,14 @@ public class Persona {
     private String rut;
     private String cargo;
     
-    public Persona(String nombre, String rut) {
-        this(nombre, rut, "Participante");
-    }
-    
     public Persona(String nombre, String rut, String cargo){
         this.nombre = nombre;
         this.rut = rut;
         this.cargo = cargo;
+    }
+
+    public Persona(String nombre, String rut) {
+        this(nombre, rut, "Participante");
     }
     
     public String getName() {

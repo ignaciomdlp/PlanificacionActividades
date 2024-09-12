@@ -5,43 +5,48 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class Data {
-    public static void leerDataActividad(HashMap<String, Actividad> mapa) {
-        InputStream inputStream = Data.class.getResourceAsStream("/archivoActividades.txt");
+    public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException {
+        InputStream streamAct = Data.class.getResourceAsStream("/archivoActividades.txt");
+        InputStream streamPart = Data.class.getResourceAsStream("/archivoParticipantes.txt");
         
-        if (inputStream != null) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-                String linea;
-                String nombreAct = null;
-                String nombreEncargado = null;
+        if (streamAct != null && streamPart != null) {
+            BufferedReader lectorAct = new BufferedReader(new InputStreamReader(streamAct));
+            BufferedReader lectorPart = new BufferedReader(new InputStreamReader(streamPart));
+            String lineaAct;
+            String lineaPart;
+            
+            while ((lineaAct = lectorAct.readLine()) != null && (lineaPart = lectorPart.readLine()) != null) {
+                String[] divAct = null;
+                String[] divPart = null;
                 
-                while ((linea = br.readLine()) != null) {
-                    String[] partes = linea.split(";");
-                    
-                    if (nombreAct == null) {
-                        // Línea de actividad y encargado
-                        nombreAct = partes[0].trim();
-                        nombreEncargado = partes[1].trim();
-                        mapa.put(nombreAct, new Actividad(nombreEncargado));
-                    } else {
-                        // Línea de participantes
-                        Actividad actividad = mapa.get(nombreAct);
-                        if (actividad != null) {
-                            for (String participante : partes) {
-                                String[] dataPart = participante.split("|");
-                                Persona nuevoPart = new Persona(dataPart[0].trim(), dataPart[1].trim());
-                                actividad.addParticipante(nuevoPart);
-                            }
-                        }
-                        // Preparar para la próxima actividad
-                        nombreAct = null;
-                    }
+                if (lineaAct.contains(";")) {
+                    divAct = new String[lineaAct.split(";").length];
+                    divAct = lineaAct.split(";");}
+                else {
+                    divAct = new String[1];
+                    divAct[0] = lineaAct;
                 }
-            } catch (IOException e) {
-                System.err.println("Error al leer el archivo: " + e.getMessage());
+                
+                if (lineaPart.contains(";")) {
+                    divPart = new String[lineaPart.split(";").length];
+                    divPart = lineaPart.split(";");
+                }
+                else {
+                    divPart = new String[1];
+                    divPart[0] = lineaPart;
+                }
+
+                String[] encargado = divAct[1].split("|");
+                Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1], "Encargado"));
+
+                for (int i = 0 ; i < divPart.length ; i++) {
+                    String[] participante = divPart[i].split("|");
+                    Persona nuevo = new Persona(participante[0], participante[1]);
+                    ActX.addParticipante(nuevo);
+                }
+
+                mapa.put(ActX.getActName(), ActX);
+                }
             }
-        } else {
-            System.err.println("Archivo no encontrado.");
         }
     }
-
-}
