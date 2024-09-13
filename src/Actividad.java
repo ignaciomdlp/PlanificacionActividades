@@ -6,8 +6,8 @@ public final class Actividad {
 
     public Actividad(String nombreActividad, Persona encargado) {
         this.nombreActividad = nombreActividad;
-        setEncargado(encargado);
         this.participantes = new ArrayList<Persona>();
+        this.participantes.add(encargado);
     }
 
     public Actividad(String nombreActividad) {
