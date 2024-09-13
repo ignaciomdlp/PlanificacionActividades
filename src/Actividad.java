@@ -17,7 +17,7 @@ public final class Actividad {
     }
 
     public void mostrarInfo() {
-        System.out.println("Actividad: " + nombreActividad);
+        System.out.println("\nActividad: " + nombreActividad);
         System.out.println("Encargado: " + (getEncargado() != null ? getEncargado().getName() : "N/A"));
         System.out.println("Participantes:");
         for (Persona p : participantes) {
