@@ -31,7 +31,7 @@ public class Data {
                     divPart = new String[]{lineaPart};
                 }
 
-                String[] encargado = divAct[1].split("|");
+                String[] encargado = divAct[1].split("\\|");
                 Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1]));
 
                 for (String part : divPart) {
