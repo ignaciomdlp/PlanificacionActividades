@@ -6,13 +6,14 @@ public final class Actividad {
 
     public Actividad(String nombreActividad, Persona encargado) {
         this.nombreActividad = nombreActividad;
-        setEncargado(encargado);
         this.participantes = new ArrayList<Persona>();
+        this.participantes.add(encargado);
+        setEncargado(encargado);
     }
 
     public Actividad(String nombreActividad) {
         this.nombreActividad = nombreActividad;
-        this.participantes = new ArrayList<Persona>();
+        participantes = new ArrayList<Persona>();
     }
 
     public void mostrarInfo() {

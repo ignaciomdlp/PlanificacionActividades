@@ -39,9 +39,9 @@ public class Funciones {
             String entradaEncargado = lector.readLine();
             System.out.println("Ingrese el rut del encargado:");
             String entradaRutEncargado = lector.readLine();
-            Persona P0 = new Persona(entradaEncargado, entradaRutEncargado);
+            Persona P0 = new Persona(entradaEncargado, entradaRutEncargado, "Encargado");
             ACTX = new Actividad(entradaActividad, P0);
-            parExistentes.put(entradaRutEncargado, ACTX);
+            parExistentes.put(ACTX.getActName(), ACTX);
             System.out.println("Encargado añadido con éxito");
         } else {
             ACTX = new Actividad(entradaActividad);
@@ -63,7 +63,7 @@ public class Funciones {
                 System.out.println("Ingrese el rut del participante:");
                 String rutParticipante = lector.readLine();
                 Persona P0 = new Persona(participante, rutParticipante);
-                parExistentes.put(rutParticipante, ACTX);
+                parExistentes.put(ACTX.getActName(), ACTX);
                 ACTX.addParticipante(P0);
                 System.out.println("Participante añadido con éxito");
                 
@@ -85,7 +85,7 @@ public class Funciones {
         System.out.println("Ingrese el nombre de la actividad que desea eliminar:");
         String nombre = lector.readLine();
         
-        if (parExistentes.containsKey(nombre)){
+        if (!parExistentes.containsKey(nombre)){
             System.out.println("Nombre inválido.");
         }else {
             parExistentes.remove(nombre);
@@ -117,7 +117,7 @@ public class Funciones {
                         System.out.println("Ingrese el rut del nuevo encargado:");
                         String rutEncargado = lector.readLine();
                         Persona P0 = new Persona(nombreEncargado, rutEncargado);
-                        parExistentes.put(rutEncargado, act);
+                        parExistentes.put(act.getActName(), act);
                         act.setEncargado(P0);
                         System.out.println("Participante añadido con éxito");
                     } else{
@@ -130,7 +130,7 @@ public class Funciones {
                     System.out.println("Ingrese el rut del participante:");
                     String rutParticipante = lector.readLine();
                     Persona P0 = new Persona(nombreParticipante, rutParticipante);
-                    parExistentes.put(rutParticipante, act);
+                    parExistentes.put(act.getActName(), act);
                     act.addParticipante(P0);
                     System.out.println("Participante añadido con éxito");
                 }
