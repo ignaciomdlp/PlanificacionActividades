@@ -1,17 +1,17 @@
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class Data {
     public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException {
-        InputStream streamAct = Data.class.getResourceAsStream("/archivoActividades.txt");
-        InputStream streamPart = Data.class.getResourceAsStream("/archivoParticipantes.txt");
-        
-        if (streamAct != null && streamPart != null) {
-            BufferedReader lectorAct = new BufferedReader(new InputStreamReader(streamAct));
-            BufferedReader lectorPart = new BufferedReader(new InputStreamReader(streamPart));
+        // Use absolute paths for debugging purposes
+        String filePathAct = "src/archivoActividades.txt";
+        String filePathPart = "src/archivoParticipantes.txt";
+
+        try (BufferedReader lectorAct = new BufferedReader(new FileReader(filePathAct));
+             BufferedReader lectorPart = new BufferedReader(new FileReader(filePathPart))) {
+            
             String lineaAct;
             String lineaPart;
             
@@ -43,5 +43,9 @@ public class Data {
                 mapa.put(ActX.getActName(), ActX);
             }
         }
+    }
+
+    public static void guardarDatos(HashMap<String, Actividad> mapa) throws IOException {
+        // Implementation for saving data
     }
 }
