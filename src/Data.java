@@ -1,16 +1,20 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Data {
+    
     public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException {
         // Use absolute paths for debugging purposes
         String filePathAct = "src/archivoActividades.txt";
         String filePathPart = "src/archivoParticipantes.txt";
 
         try (BufferedReader lectorAct = new BufferedReader(new FileReader(filePathAct));
-             BufferedReader lectorPart = new BufferedReader(new FileReader(filePathPart))) {
+        BufferedReader lectorPart = new BufferedReader(new FileReader(filePathPart))) {
             
             String lineaAct;
             String lineaPart;
@@ -46,6 +50,27 @@ public class Data {
     }
 
     public static void guardarDatos(HashMap<String, Actividad> mapa) throws IOException {
-        // Implementation for saving data
+        String filePathAct = "src/archivoActividades.txt";
+        String filePathPart = "src/archivoParticipantes.txt";
+
+        try (BufferedWriter escritorAct = new BufferedWriter(new FileWriter(filePathAct));
+        BufferedWriter escritorPart = new BufferedWriter(new FileWriter(filePathPart))) {
+            Actividad actAux = null;
+            for (String key : mapa.keySet()) {
+                actAux = mapa.get(key);
+
+                Persona encargado = actAux.getEncargado();
+                escritorAct.write(actAux.getActName() + ";" + encargado.getName() + "|" + encargado.getRut());
+                escritorAct.newLine();
+
+                ArrayList<Persona> participantes = actAux.getParticipantes();
+                for (int i = 0 ; i < participantes.size() ; i++) {
+                    Persona part = participantes.get(i);
+                    escritorPart.write(part.getName() + "|" + part.getRut());
+                    if (i < participantes.size() - 1) {escritorPart.write(";");}
+                }
+                escritorPart.newLine();
+            }
+        }
     }
 }

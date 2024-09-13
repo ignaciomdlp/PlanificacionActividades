@@ -1,4 +1,5 @@
-Curso de Introduccion a la Programacion;Ninguno|00000000-0
-Proyecto Final de Ingenieria;Dr. Juan Perez|13453876-K
 Seminario de Investigacion;Dra. Maria Gomez|13453490-9
+Proyecto Final de Ingenieria;Dr. Juan Perez|13453876-K
 Taller de Innovacion Tecnologica;Dr. Carlos Reyes|12345678-9
+Curso de Introduccion a la Programacion;Ninguno|00000000-0
+Completada;Ignacio Matus de la Parra|21747952-K
