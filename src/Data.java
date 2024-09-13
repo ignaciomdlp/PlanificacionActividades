@@ -16,37 +16,33 @@ public class Data {
             String lineaPart;
             
             while ((lineaAct = lectorAct.readLine()) != null && (lineaPart = lectorPart.readLine()) != null) {
-                String[] divAct = null;
-                String[] divPart = null;
+                String[] divAct;
+                String[] divPart;
                 
                 if (lineaAct.contains(";")) {
-                    divAct = new String[lineaAct.split(";").length];
-                    divAct = lineaAct.split(";");}
-                else {
-                    divAct = new String[1];
-                    divAct[0] = lineaAct;
+                    divAct = lineaAct.split(";");
+                } else {
+                    divAct = new String[]{lineaAct};
                 }
                 
                 if (lineaPart.contains(";")) {
-                    divPart = new String[lineaPart.split(";").length];
                     divPart = lineaPart.split(";");
-                }
-                else {
-                    divPart = new String[1];
-                    divPart[0] = lineaPart;
+                } else {
+                    divPart = new String[]{lineaPart};
                 }
 
-                String[] encargado = divAct[1].split("|");
+                // Escapar el carácter '|' correctamente
+                String[] encargado = divAct[1].split("\\|");
                 Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1], "Encargado"));
 
-                for (int i = 0 ; i < divPart.length ; i++) {
-                    String[] participante = divPart[i].split("|");
+                for (String part : divPart) {
+                    String[] participante = part.split("\\|");
                     Persona nuevo = new Persona(participante[0], participante[1]);
                     ActX.addParticipante(nuevo);
                 }
 
                 mapa.put(ActX.getActName(), ActX);
-                }
             }
         }
     }
+}
