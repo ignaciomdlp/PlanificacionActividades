@@ -6,8 +6,8 @@ public final class Actividad {
 
     public Actividad(String nombreActividad, Persona encargado) {
         this.nombreActividad = nombreActividad;
-        setEncargado(encargado);
         this.participantes = new ArrayList<Persona>();
+        this.participantes.add(encargado);
     }
 
     public Actividad(String nombreActividad) {
@@ -16,7 +16,7 @@ public final class Actividad {
     }
 
     public void mostrarInfo() {
-        System.out.println("Actividad: " + nombreActividad);
+        System.out.println("\nActividad: " + nombreActividad);
         System.out.println("Encargado: " + (getEncargado() != null ? getEncargado().getName() : "N/A"));
         System.out.println("Participantes:");
         for (Persona p : participantes) {

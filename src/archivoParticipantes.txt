@@ -1,4 +1,4 @@
 Ninguno|00000000-0
-Juan Pérez|12345678-9;Pedro González|45678901-2
-Ana Fernández|11223344-5
-Silvia Herrera|55667788-7;Daniel Fuentes|33445566-8;Roberto Díaz|99887766-5
+Juan Perez|12345678-9;Pedro Gonzalez|45678901-2
+Ana Fernandez|11223344-5
+Silvia Herrera|55667788-7;Daniel Fuentes|33445566-8;Roberto Diaz|99887766-5
