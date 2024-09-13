@@ -39,7 +39,7 @@ public class Funciones {
             String entradaEncargado = lector.readLine();
             System.out.println("Ingrese el rut del encargado:");
             String entradaRutEncargado = lector.readLine();
-            Persona P0 = new Persona(entradaEncargado, entradaRutEncargado, "Encargado");
+            Persona P0 = new Persona(entradaEncargado, entradaRutEncargado);
             ACTX = new Actividad(entradaActividad, P0);
             parExistentes.put(ACTX.getActName(), ACTX);
             System.out.println("Encargado añadido con éxito");

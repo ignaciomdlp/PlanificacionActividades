@@ -1,16 +1,10 @@
 public class Persona {
     private String nombre;
     private String rut;
-    private String cargo;
     
-    public Persona(String nombre, String rut, String cargo){
+    public Persona(String nombre, String rut){
         this.nombre = nombre;
         this.rut = rut;
-        this.cargo = cargo;
-    }
-
-    public Persona(String nombre, String rut) {
-        this(nombre, rut, "Participante");
     }
     
     public String getName() {
@@ -19,14 +13,6 @@ public class Persona {
     
     public String getRut() {
         return rut;
-    }
-    
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
     }
     
     public void setName(String a) {

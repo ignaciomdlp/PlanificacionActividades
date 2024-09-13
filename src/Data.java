@@ -37,7 +37,7 @@ public class Data {
                 }
 
                 String[] encargado = divAct[1].split("|");
-                Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1], "Encargado"));
+                Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1]));
 
                 for (int i = 0 ; i < divPart.length ; i++) {
                     String[] participante = divPart[i].split("|");
