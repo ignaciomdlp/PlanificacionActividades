@@ -19,6 +19,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null, "Error al leer los datos: " + e.getMessage());
             } catch (CapacidadMaximaExcedidaException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FechaInvalidaException ez) {
             }
         });
     }

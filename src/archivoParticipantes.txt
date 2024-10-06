@@ -1,5 +1,3 @@
-Ana Fernandez|11223344-5
-Juan Perez|12345678-9;Pedro Gonzalez|45678901-2
-Silvia Herrera|55667788-7;Daniel Fuentes|33445566-8;Roberto Diaz|99887766-5
+Manuel Cabello|21432108-4;Roberto Jara|12345678-9
 Ninguno|00000000-0
 Benjamin Leiva|21396737-9;Manuel Cabello|21432108-4;Jose Canales|21765738-6

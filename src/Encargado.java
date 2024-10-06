@@ -3,4 +3,9 @@ public class Encargado extends Persona {
     {
         super(nombre, rut);
     }
+
+    @Override
+    public String getName() {
+        return "(P)";
+    }
 }

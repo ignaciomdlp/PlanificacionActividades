@@ -5,44 +5,57 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
-
+import java.time.LocalDate;
 
 public class Data {
     
-    public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException,CapacidadMaximaExcedidaException{
-        // Use absolute paths for debugging purposes
+    public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException, CapacidadMaximaExcedidaException, FechaInvalidaException {
         String filePathAct = "src/archivoActividades.txt";
         String filePathPart = "src/archivoParticipantes.txt";
 
         try (BufferedReader lectorAct = new BufferedReader(new FileReader(filePathAct));
-        BufferedReader lectorPart = new BufferedReader(new FileReader(filePathPart))) {
+             BufferedReader lectorPart = new BufferedReader(new FileReader(filePathPart))) {
             
             String lineaAct;
             String lineaPart;
             
             while ((lineaAct = lectorAct.readLine()) != null && (lineaPart = lectorPart.readLine()) != null) {
-                String[] divAct;
-                String[] divPart;
+                String[] divAct = lineaAct.split(";");
+                String[] divPart = lineaPart.split(";");
                 
-                if (lineaAct.contains(";")) {
-                    divAct = lineaAct.split(";");
-                } else {
-                    divAct = new String[]{lineaAct};
-                }
-                
-                if (lineaPart.contains(";")) {
-                    divPart = lineaPart.split(";");
-                } else {
-                    divPart = new String[]{lineaPart};
+                if (divAct.length < 3) {
+                    System.out.println("Error: formato incorrecto en línea de actividad: " + lineaAct);
+                    continue;
                 }
 
-                String[] encargado = divAct[1].split("\\|");
-                Actividad ActX = new Actividad(divAct[0], new Encargado(encargado[0], encargado[1]));
+                String nombreActividad = divAct[0];
+                LocalDate fechaInicio = LocalDate.parse(divAct[1]);
+                String[] encargado = divAct[2].split("\\|");
+
+                Actividad ActX;
+                if (encargado[0].equals("Ninguno")) {
+                    ActX = new Actividad(nombreActividad);
+                } else {
+                    ActX = new Actividad(nombreActividad, new Encargado(encargado[0], encargado[1]));
+                }
+
+                try {
+                    ActX.setFechaInicio(fechaInicio);
+                } catch (FechaInvalidaException e) {
+                    System.out.println("Error al establecer la fecha para " + nombreActividad + ": " + e.getMessage());
+                    continue;
+                }
 
                 for (String part : divPart) {
                     String[] participante = part.split("\\|");
-                    Participante nuevo = new Participante(participante[0], participante[1]);
-                    ActX.addParticipante(nuevo);
+                    if (participante.length == 2) {
+                        Participante nuevo = new Participante(participante[0], participante[1]);
+                        try {
+                            ActX.addParticipante(nuevo);
+                        } catch (CapacidadMaximaExcedidaException e) {
+                            System.out.println("No se pudo añadir participante a " + nombreActividad + ": " + e.getMessage());
+                        }
+                    }
                 }
 
                 mapa.put(ActX.getActName(), ActX);
@@ -55,20 +68,25 @@ public class Data {
         String filePathPart = "src/archivoParticipantes.txt";
 
         try (BufferedWriter escritorAct = new BufferedWriter(new FileWriter(filePathAct));
-        BufferedWriter escritorPart = new BufferedWriter(new FileWriter(filePathPart))) {
-            Actividad actAux = null;
-            for (String key : mapa.keySet()) {
-                actAux = mapa.get(key);
+             BufferedWriter escritorPart = new BufferedWriter(new FileWriter(filePathPart))) {
+            for (Actividad actAux : mapa.values()) {
+                Encargado encargado = actAux.getEncargado();
+                String encargadoInfo = encargado != null ? 
+                    encargado.getName() + "|" + encargado.getRut() : 
+                    "Ninguno|00000000-0";
 
-                Persona encargado = actAux.getEncargado();
-                escritorAct.write(actAux.getActName() + ";" + encargado.getName() + "|" + encargado.getRut());
+                escritorAct.write(actAux.getActName() + ";" + 
+                                  actAux.getFechaInicio() + ";" + 
+                                  encargadoInfo);
                 escritorAct.newLine();
 
                 ArrayList<Participante> participantes = actAux.getParticipantes();
-                for (int i = 0 ; i < participantes.size() ; i++) {
+                for (int i = 0; i < participantes.size(); i++) {
                     Persona part = participantes.get(i);
                     escritorPart.write(part.getName() + "|" + part.getRut());
-                    if (i < participantes.size() - 1) {escritorPart.write(";");}
+                    if (i < participantes.size() - 1) {
+                        escritorPart.write(";");
+                    }
                 }
                 escritorPart.newLine();
             }

@@ -1,11 +1,10 @@
 
 import javax.swing.*;
 import java.awt.*; 
-import java.awt.event.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Ventana extends JFrame {
     private HashMap<String, Actividad> mapaActividades;
@@ -123,6 +122,7 @@ public class Ventana extends JFrame {
         JTextField nombreField = new JTextField(20);
         JTextField encargadoNombreField = new JTextField(20);
         JTextField encargadoRutField = new JTextField(20);
+        JTextField fechaField = new JTextField(20);
         
         JButton btnAñadir = new JButton("Añadir Actividad");
         btnAñadir.setFont(new Font("times new roman", Font.PLAIN, 15));
@@ -134,13 +134,22 @@ public class Ventana extends JFrame {
             String nombre = nombreField.getText();
             String encargadoNombre = encargadoNombreField.getText();
             String encargadoRut = encargadoRutField.getText();
+            String fechaStr = fechaField.getText();
             
-            if (!nombre.isEmpty() && !encargadoNombre.isEmpty() && !encargadoRut.isEmpty()) {
-                Encargado encargado = new Encargado(encargadoNombre, encargadoRut);
-                Actividad nuevaActividad = new Actividad(nombre, encargado);
-                mapaActividades.put(nombre, nuevaActividad);
-                JOptionPane.showMessageDialog(this, "Actividad añadida con éxito");
-                mostrarMenuGestion();
+            if (!nombre.isEmpty() && !encargadoNombre.isEmpty() && !encargadoRut.isEmpty() && !fechaStr.isEmpty()) {
+                try {
+                    LocalDate fecha = LocalDate.parse(fechaStr);
+                    Encargado encargado = new Encargado(encargadoNombre, encargadoRut);
+                    Actividad nuevaActividad = new Actividad(nombre, encargado);
+                    nuevaActividad.setFechaInicio(fecha);
+                    mapaActividades.put(nombre, nuevaActividad);
+                    JOptionPane.showMessageDialog(this, "Actividad añadida con éxito");
+                    mostrarMenuGestion();
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use el formato YYYY-MM-DD.");
+                } catch (FechaInvalidaException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos");
             }
@@ -154,6 +163,8 @@ public class Ventana extends JFrame {
         panel.add(encargadoNombreField);
         panel.add(new JLabel("RUT del Encargado:"));
         panel.add(encargadoRutField);
+        panel.add(new JLabel("Fecha de Inicio (YYYY-MM-DD):"));
+        panel.add(fechaField);
         panel.add(btnAñadir);
         panel.add(btnVolver);
         
@@ -214,17 +225,12 @@ public class Ventana extends JFrame {
         btnCambiarNombre.addActionListener(e -> cambiarNombreActividad(nombreActividad));
         btnAñadirEncargado.addActionListener(e -> añadirEncargadoActividad(nombreActividad));
         btnAñadirParticipante.addActionListener(e -> {
-            try {
-                añadirParticipanteActividad(nombreActividad);
-            } catch (CapacidadMaximaExcedidaException ex) {
-                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            añadirParticipanteActividad(nombreActividad);
         });
         btnEliminarPersona.addActionListener(e -> eliminarPersonaActividad(nombreActividad));
         btnVolver.addActionListener(e -> modificarActividad());
 
-        btnCambiarFecha.addActionListener(e -> {
-        });
+        btnCambiarFecha.addActionListener(e -> cambiarFechaActividad(nombreActividad));
         
         panel.add(new JLabel("Opciones de modificación para: " + nombreActividad));
         panel.add(btnCambiarNombre);
@@ -261,15 +267,37 @@ public class Ventana extends JFrame {
             JOptionPane.showMessageDialog(this, "Esta actividad ya tiene un encargado");
         }
     }
+    
+    private void cambiarFechaActividad(String nombreActividad) {
+        String nuevaFechaStr = JOptionPane.showInputDialog(this, "Ingrese la nueva fecha de la actividad (YYYY-MM-DD):");
+        if (nuevaFechaStr != null && !nuevaFechaStr.isEmpty()) {
+            try {
+                LocalDate nuevaFecha = LocalDate.parse(nuevaFechaStr);
+                Actividad actividad = mapaActividades.get(nombreActividad);
+                actividad.setFechaInicio(nuevaFecha);
+                JOptionPane.showMessageDialog(this, "Fecha de la actividad cambiada con éxito");
+            } catch (DateTimeParseException ex) {
+                JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use el formato YYYY-MM-DD.");
+            } catch (FechaInvalidaException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+    }
 
-    private void añadirParticipanteActividad(String nombreActividad) throws CapacidadMaximaExcedidaException {
+    private void añadirParticipanteActividad(String nombreActividad) {
         Actividad actividad = mapaActividades.get(nombreActividad);
         String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del participante:");
         String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del participante:");
         if (nombre != null && !nombre.isEmpty() && rut != null && !rut.isEmpty()) {
-            Participante participante = new Participante(nombre, rut);
-            actividad.addParticipante(participante);
-            JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
+            try {
+                Participante participante = new Participante(nombre, rut);
+                actividad.addParticipante(participante);
+                JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
+            } catch (CapacidadMaximaExcedidaException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "RUT inválido. Debe ser en el formato 00000000-0.");
+            }
         }
     }
 
@@ -352,12 +380,26 @@ public class Ventana extends JFrame {
     private String actividadToString(Actividad actividad) {
         StringBuilder sb = new StringBuilder();
         sb.append("Actividad: ").append(actividad.getActName()).append("\n");
-        sb.append("Fecha de Inicio: ").append(actividad.getFechaInicio()).append("\n");
-        sb.append("Encargado: ").append(actividad.getEncargado().getName())
-          .append(" | ").append(actividad.getEncargado().getRut()).append("\n");
+        
+        LocalDate fechaInicio = actividad.getFechaInicio();
+        sb.append("Fecha de Inicio: ").append(fechaInicio != null ? fechaInicio.toString() : "No establecida").append("\n");
+        
+        Encargado encargado = actividad.getEncargado();
+        if (encargado != null) {
+            sb.append("Encargado: ").append(encargado.getName())
+              .append(" | ").append(encargado.getRut()).append("\n");
+        } else {
+            sb.append("Encargado: No asignado\n");
+        }
+        
         sb.append("Participantes:\n");
-        for (Persona p : actividad.getParticipantes()) {
-            sb.append("- ").append(p.getName()).append(" | ").append(p.getRut()).append("\n");
+        ArrayList<Participante> participantes = actividad.getParticipantes();
+        if (participantes.isEmpty()) {
+            sb.append("- No hay participantes registrados\n");
+        } else {
+            for (Persona p : participantes) {
+                sb.append("- ").append(p.getName()).append(" | ").append(p.getRut()).append("\n");
+            }
         }
         return sb.toString();
     }
