@@ -3,22 +3,22 @@ import java.time.LocalDate;
 
 public final class Actividad {
     private String nombreActividad;
-    private Persona encargado;
-    private ArrayList<Persona> participantes;
+    private Encargado encargado;
+    private ArrayList<Participante> participantes;
     private static final int capacidadMaxima = 10;
     private LocalDate fechaInicio;
 
 
-    public Actividad(String nombreActividad, Persona encargado) {
+    public Actividad(String nombreActividad, Encargado encargado) {
         this.nombreActividad = nombreActividad;
         this.encargado = encargado;
-        this.participantes = new ArrayList<Persona>();
+        this.participantes = new ArrayList<Participante>();
     }
 
     public Actividad(String nombreActividad) {
         this.nombreActividad = nombreActividad;
         this.encargado = null;
-        participantes = new ArrayList<Persona>();
+        participantes = new ArrayList<Participante>();
     }
 
     public void mostrarInfo() {
@@ -57,36 +57,36 @@ public final class Actividad {
         this.fechaInicio = fechaInicio; // Asignar la fecha si es válida
     }
     
-    public Persona getEncargado() {
+    public Encargado getEncargado() {
         return encargado;
     }
     
-    public ArrayList<Persona> getParticipantes() {
+    public ArrayList<Participante> getParticipantes() {
         return participantes;
     }
 
-    public void setEncargado(Persona encargado) {
+    public void setEncargado(Encargado encargado) {
         if (this.encargado != null) {System.out.println("No se pudo añadir el encargado porque ya hay uno.");}
         else {this.encargado = encargado;}
     }
     
-    public void delEncargado(Persona persona){
+    public void delEncargado(Encargado persona){
         this.encargado = null;
     }
 
-    public void addParticipante(Persona persona) throws CapacidadMaximaExcedidaException {
+    public void addParticipante(Participante participante) throws CapacidadMaximaExcedidaException {
         if (participantes.size() >= capacidadMaxima) {
             throw new CapacidadMaximaExcedidaException(
-                "No se puede añadir al participante " + persona.getName() + 
+                "No se puede añadir al participante " + participante.getName() + 
                 ". Capacidad máxima de " + capacidadMaxima + " participantes alcanzada en la actividad " + nombreActividad + "."
             );
         }
-        participantes.add(persona);
+        participantes.add(participante);
     }
     
     
-    public void delPartipante(Persona persona){
-        participantes.remove(persona);
+    public void delParticipante(Participante participante){
+        participantes.remove(participante);
     }
 
     public static int getCapacidadMaxima() {

@@ -37,11 +37,11 @@ public class Data {
                 }
 
                 String[] encargado = divAct[1].split("\\|");
-                Actividad ActX = new Actividad(divAct[0], new Persona(encargado[0], encargado[1]));
+                Actividad ActX = new Actividad(divAct[0], new Encargado(encargado[0], encargado[1]));
 
                 for (String part : divPart) {
                     String[] participante = part.split("\\|");
-                    Persona nuevo = new Persona(participante[0], participante[1]);
+                    Participante nuevo = new Participante(participante[0], participante[1]);
                     ActX.addParticipante(nuevo);
                 }
 
@@ -64,7 +64,7 @@ public class Data {
                 escritorAct.write(actAux.getActName() + ";" + encargado.getName() + "|" + encargado.getRut());
                 escritorAct.newLine();
 
-                ArrayList<Persona> participantes = actAux.getParticipantes();
+                ArrayList<Participante> participantes = actAux.getParticipantes();
                 for (int i = 0 ; i < participantes.size() ; i++) {
                     Persona part = participantes.get(i);
                     escritorPart.write(part.getName() + "|" + part.getRut());

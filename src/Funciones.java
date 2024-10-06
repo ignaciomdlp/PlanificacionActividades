@@ -74,7 +74,7 @@ public class Funciones {
                 entradaRutEncargado = reader.readLine();
     
                 try {
-                    Persona P0 = new Persona(entradaEncargado, entradaRutEncargado);
+                    Encargado P0 = new Encargado(entradaEncargado, entradaRutEncargado);
                     rutValido = true;
                     ACTX = new Actividad(entradaActividad, P0); // Reasignacion ACTX con encargado
                     System.out.println("Encargado añadido con éxito");
@@ -100,9 +100,9 @@ public class Funciones {
     
                 System.out.println("Ingrese el rut del participante:");
                 String rutParticipante = reader.readLine();
-                Persona nuevoParticipante = null;
+                Participante nuevoParticipante = null;
                 try {
-                    nuevoParticipante = new Persona(participante, rutParticipante); // Intentar crear la Persona
+                    nuevoParticipante = new Participante(participante, rutParticipante); // Intentar crear la Persona
                     ACTX.addParticipante(nuevoParticipante); // Intentar agregar el participante
                     System.out.println("Participante añadido con éxito");
                 } catch (IllegalArgumentException e) {
@@ -172,7 +172,7 @@ public class Funciones {
                         String rutEncargado = reader.readLine();
     
                         try {
-                            Persona P0 = new Persona(nombreEncargado, rutEncargado);
+                            Encargado P0 = new Encargado(nombreEncargado, rutEncargado);
                             act.setEncargado(P0);
                             System.out.println("Encargado añadido con éxito");
                         } catch (IllegalArgumentException e) {
@@ -188,7 +188,7 @@ public class Funciones {
                     System.out.println("Ingrese el rut del participante:");
                     String rutParticipante = reader.readLine();
                     try {
-                        Persona P0 = new Persona(nombreParticipante, rutParticipante);
+                        Participante P0 = new Participante(nombreParticipante, rutParticipante);
                         act.addParticipante(P0);
                         System.out.println("Participante añadido con éxito");
                     } catch (IllegalArgumentException e) {
@@ -229,7 +229,7 @@ public class Funciones {
                             System.out.println("Ingrese el rut del encargado para eliminarlo: ");
                             String rutEncargado = reader.readLine();
     
-                            Persona PersE = act.getEncargado();
+                            Encargado PersE = act.getEncargado();
     
                             if (rutEncargado.equals(PersE.getRut())) {
                                 act.delEncargado(PersE);
@@ -244,12 +244,12 @@ public class Funciones {
                             System.out.println("Ingrese el rut de este participante para eliminarlo: ");
                             String rutParticipante = reader.readLine();
     
-                            ArrayList<Persona> participantes = act.getParticipantes();
+                            ArrayList<Participante> participantes = act.getParticipantes();
                             boolean eliminated = false;
     
-                            for (Persona p : participantes) {
+                            for (Participante p : participantes) {
                                 if (name.equals(p.getName()) && rutParticipante.equals(p.getRut())) {
-                                    act.delPartipante(p);
+                                    act.delParticipante(p);
                                     eliminated = true;
                                 }
                             }

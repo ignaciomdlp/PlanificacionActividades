@@ -136,7 +136,7 @@ public class Ventana extends JFrame {
             String encargadoRut = encargadoRutField.getText();
             
             if (!nombre.isEmpty() && !encargadoNombre.isEmpty() && !encargadoRut.isEmpty()) {
-                Persona encargado = new Persona(encargadoNombre, encargadoRut);
+                Encargado encargado = new Encargado(encargadoNombre, encargadoRut);
                 Actividad nuevaActividad = new Actividad(nombre, encargado);
                 mapaActividades.put(nombre, nuevaActividad);
                 JOptionPane.showMessageDialog(this, "Actividad añadida con éxito");
@@ -246,7 +246,7 @@ public class Ventana extends JFrame {
             String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del encargado:");
             String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del encargado:");
             if (nombre != null && !nombre.isEmpty() && rut != null && !rut.isEmpty()) {
-                Persona encargado = new Persona(nombre, rut);
+                Encargado encargado = new Encargado(nombre, rut);
                 actividad.setEncargado(encargado);
                 JOptionPane.showMessageDialog(this, "Encargado añadido con éxito");
             }
@@ -260,7 +260,7 @@ public class Ventana extends JFrame {
         String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del participante:");
         String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del participante:");
         if (nombre != null && !nombre.isEmpty() && rut != null && !rut.isEmpty()) {
-            Persona participante = new Persona(nombre, rut);
+            Participante participante = new Participante(nombre, rut);
             actividad.addParticipante(participante);
             JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
         }
@@ -280,18 +280,18 @@ public class Ventana extends JFrame {
                 JOptionPane.showMessageDialog(this, "Esta actividad no tiene encargado");
             }
         } else if (seleccion == 1) { // Eliminar Participante
-            ArrayList<Persona> participantes = actividad.getParticipantes();
+            ArrayList<Participante> participantes = actividad.getParticipantes();
             if (!participantes.isEmpty()) {
                 String[] nombresParticipantes = participantes.stream().map(Persona::getName).toArray(String[]::new);
                 String seleccionado = (String) JOptionPane.showInputDialog(this, "Seleccione el participante a eliminar:",
                         "Eliminar Participante", JOptionPane.QUESTION_MESSAGE, null, nombresParticipantes, nombresParticipantes[0]);
                 if (seleccionado != null) {
-                    Persona participanteAEliminar = participantes.stream()
+                    Participante participanteAEliminar = participantes.stream()
                             .filter(p -> p.getName().equals(seleccionado))
                             .findFirst()
                             .orElse(null);
                     if (participanteAEliminar != null) {
-                        actividad.delPartipante(participanteAEliminar);
+                        actividad.delParticipante(participanteAEliminar);
                         JOptionPane.showMessageDialog(this, "Participante eliminado con éxito");
                     }
                 }
