@@ -17,7 +17,7 @@ public class Funciones {
             System.out.println("No hay actividades registradas.");
         } else {
             for (Actividad actividad : mapaActividades.values()) {
-                actividad.mostrarInfo(); // Utiliza el método mostrarInfo() para imprimir detalles
+                //actividad.mostrarInfo(); // Utiliza el método mostrarInfo() para imprimir detalles
             }
         }
     }
