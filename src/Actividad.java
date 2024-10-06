@@ -1,10 +1,13 @@
 import java.util.*;
+import java.time.LocalDate;
 
 public final class Actividad {
     private String nombreActividad;
     private Persona encargado;
     private ArrayList<Persona> participantes;
     private static final int capacidadMaxima = 10;
+    private LocalDate fechaInicio;
+
 
     public Actividad(String nombreActividad, Persona encargado) {
         this.nombreActividad = nombreActividad;
@@ -29,6 +32,11 @@ public final class Actividad {
         for (Persona p : participantes) {
             System.out.println("- " + p.getName() + " | " + p.getRut());
         }
+        if (fechaInicio != null) {
+            System.out.println("Fecha de inicio: " + fechaInicio);
+        } else {
+            System.out.println("Fecha de inicio: No establecida");
+        }
     }
 
     public String getActName() {
@@ -40,6 +48,13 @@ public final class Actividad {
         Actividad ACT = mapa.get(nombreAntiguo);
         mapa.remove(nombreAntiguo);
         mapa.put(nombreActividad, ACT);
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) throws FechaInvalidaException {
+        if (fechaInicio.isBefore(LocalDate.now())) {
+            throw new FechaInvalidaException("La fecha de inicio " + fechaInicio + " ya ha pasado. Seleccione una fecha futura.");
+        }
+        this.fechaInicio = fechaInicio; // Asignar la fecha si es válida
     }
     
     public Persona getEncargado() {

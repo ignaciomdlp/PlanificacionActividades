@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -24,10 +26,34 @@ public class Funciones {
         limpiarConsola();
         System.out.println("Ingrese un nombre para la Actividad:");
         String entradaActividad = reader.readLine();
-        
+
         // Inicializacion ACTX con una actividad sin encargado
         Actividad ACTX = new Actividad(entradaActividad); 
-    
+
+        // Preguntar por la fecha de inicio
+        System.out.println("¿Quieres establecer una fecha de inicio para la actividad? (Y/N)");
+        if (reader.readLine().equalsIgnoreCase("y")) {
+            boolean fechaValida = false;
+            LocalDate fechaInicio = null;
+
+            while (!fechaValida) {
+                System.out.println("Ingrese la fecha de inicio (formato: YYYY-MM-DD):");
+                String fechaEntrada = reader.readLine();
+            
+                try {
+                    // Intentar parsear la fecha
+                    fechaInicio = LocalDate.parse(fechaEntrada);
+                    ACTX.setFechaInicio(fechaInicio); // Validar que la fecha no sea en el pasado
+                    fechaValida = true; // Marcar como válida si no hay excepción
+                    System.out.println("Fecha de inicio establecida correctamente.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Formato de fecha inválido. Asegúrese de usar el formato YYYY-MM-DD.");
+                } catch (FechaInvalidaException e) {
+                    System.out.println(e.getMessage()); // Manejar la excepción si la fecha es en el pasado
+                }
+            }
+        }
+        
         System.out.println("¿Quieres añadir un encargado ahora? (Y/N)");
         String aux = reader.readLine().toLowerCase();
     
@@ -130,7 +156,7 @@ public class Funciones {
         if (parExistentes.containsKey(entradaActividad)) {
             Actividad act = parExistentes.get(entradaActividad);
             System.out.println("Actividad seleccionada: " + act.getActName());
-            System.out.println("1. Cambiar nombre\n2. Añadir encargado\n3. Añadir participante\n4. Eliminar personas de la actividad\n5. Volver");
+            System.out.println("1. Cambiar nombre\n2. Añadir encargado\n3. Añadir participante\n4. Cambiar fecha de la actividad\n5. Eliminar personas de la actividad\n6. Volver");
             int opcion = Integer.parseInt(reader.readLine());
     
             switch (opcion) {
@@ -173,6 +199,27 @@ public class Funciones {
                     }
                 }
                 case 4 -> {
+                    // Modificar fecha de inicio
+                    boolean fechaValida = false; 
+                    LocalDate nuevaFecha = null; 
+
+                    while (!fechaValida) {
+                        System.out.println("Ingrese la nueva fecha de inicio (formato: YYYY-MM-DD):");
+                        String fechaEntrada = reader.readLine();
+
+                        try {
+                            nuevaFecha = LocalDate.parse(fechaEntrada); 
+                            act.setFechaInicio(nuevaFecha); // Intentar establecer la fecha
+                            fechaValida = true; 
+                            System.out.println("Fecha de inicio modificada correctamente.");
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Formato de fecha inválido. Asegúrese de usar el formato YYYY-MM-DD.");
+                            } catch (FechaInvalidaException e) {
+                                System.out.println(e.getMessage()); // Manejar la excepción si la fecha es en el pasado
+                            }
+                    }
+                }
+                case 5 -> {
                     System.out.println("¿De qué cargo es la persona que deseas eliminar?: ");
                     System.out.println("1. Encargado\n2. Participante");
                     int op = Integer.parseInt(reader.readLine());

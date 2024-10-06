@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
 
+
 public class Data {
     
     public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException,CapacidadMaximaExcedidaException{
