@@ -1,3 +1,2 @@
-Manuel Cabello|21432108-4;Roberto Jara|12345678-9
 Ninguno|00000000-0
 Benjamin Leiva|21396737-9;Manuel Cabello|21432108-4;Jose Canales|21765738-6

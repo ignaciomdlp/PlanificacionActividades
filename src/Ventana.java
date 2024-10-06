@@ -10,10 +10,12 @@ public class Ventana extends JFrame {
     private HashMap<String, Actividad> mapaActividades;
     private BufferedReader reader;
     private JPanel panelActual;
+    private Stack<String> cambios;
 
-    public Ventana(HashMap<String, Actividad> mapaActividades, BufferedReader reader) {
+    public Ventana(HashMap<String, Actividad> mapaActividades, BufferedReader reader, Stack<String> cambios) {
         this.mapaActividades = mapaActividades;
         this.reader = reader;
+        this.cambios = cambios;
         
         setTitle("---|Gestor de Actividades de Universidad|---");
         setSize(600, 400);
@@ -144,6 +146,7 @@ public class Ventana extends JFrame {
                     nuevaActividad.setFechaInicio(fecha);
                     mapaActividades.put(nombre, nuevaActividad);
                     JOptionPane.showMessageDialog(this, "Actividad añadida con éxito");
+                    cambios.push("Se añadió la actividad: " + nombre);
                     mostrarMenuGestion();
                 } catch (DateTimeParseException ex) {
                     JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use el formato YYYY-MM-DD.");
@@ -249,6 +252,7 @@ public class Ventana extends JFrame {
             Actividad actividad = mapaActividades.get(nombreActividad);
             actividad.setNombreActividad(nombreActividad, nuevoNombre, mapaActividades);
             JOptionPane.showMessageDialog(this, "Nombre de la actividad cambiado con éxito");
+            cambios.push("Se cambió el nombre de la actividad: " + nombreActividad + " a " + nuevoNombre); // Registrar cambio
             mostrarOpcionesModificacion(nuevoNombre);
         }
     }
@@ -262,6 +266,7 @@ public class Ventana extends JFrame {
                 Encargado encargado = new Encargado(nombre, rut);
                 actividad.setEncargado(encargado);
                 JOptionPane.showMessageDialog(this, "Encargado añadido con éxito");
+                cambios.push("Se añadió el encargado: " + nombre + " a la actividad: " + nombreActividad); // Registrar cambio
             }
         } else {
             JOptionPane.showMessageDialog(this, "Esta actividad ya tiene un encargado");
@@ -276,6 +281,7 @@ public class Ventana extends JFrame {
                 Actividad actividad = mapaActividades.get(nombreActividad);
                 actividad.setFechaInicio(nuevaFecha);
                 JOptionPane.showMessageDialog(this, "Fecha de la actividad cambiada con éxito");
+                cambios.push("Se cambió la fecha de la actividad: " + nombreActividad + " a " + nuevaFechaStr); // Registrar cambio
             } catch (DateTimeParseException ex) {
                 JOptionPane.showMessageDialog(this, "Formato de fecha inválido. Use el formato YYYY-MM-DD.");
             } catch (FechaInvalidaException ex) {
@@ -293,6 +299,7 @@ public class Ventana extends JFrame {
                 Participante participante = new Participante(nombre, rut);
                 actividad.addParticipante(participante);
                 JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
+                cambios.push("Se añadió el participante: " + nombre + " a la actividad: " + nombreActividad); // Registrar cambio
             } catch (CapacidadMaximaExcedidaException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             } catch (IllegalArgumentException ex) {
@@ -309,8 +316,10 @@ public class Ventana extends JFrame {
         
         if (seleccion == 0) { // Eliminar Encargado
             if (actividad.getEncargado() != null) {
+                String nombreEncargado = actividad.getEncargado().getName();
                 actividad.delEncargado(actividad.getEncargado());
                 JOptionPane.showMessageDialog(this, "Encargado eliminado con éxito");
+                cambios.push("Se eliminó el encargado: " + nombreEncargado + " de la actividad: " + nombreActividad);
             } else {
                 JOptionPane.showMessageDialog(this, "Esta actividad no tiene encargado");
             }
@@ -328,6 +337,7 @@ public class Ventana extends JFrame {
                     if (participanteAEliminar != null) {
                         actividad.delParticipante(participanteAEliminar);
                         JOptionPane.showMessageDialog(this, "Participante eliminado con éxito");
+                        cambios.push("Se eliminó el participante: " + participanteAEliminar.getName() + " de la actividad: " + nombreActividad);
                     }
                 }
             } else {
@@ -353,6 +363,7 @@ public class Ventana extends JFrame {
             if (nombreActividad != null) {
                 mapaActividades.remove(nombreActividad);
                 JOptionPane.showMessageDialog(this, "Actividad eliminada con éxito");
+                cambios.push("Se eliminó la actividad: " + nombreActividad);
                 mostrarMenuGestion();
             }
         });

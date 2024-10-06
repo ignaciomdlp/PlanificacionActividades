@@ -1,3 +1,2 @@
-Taller de Ingenieria;2024-10-07;Dr. Carlos Munoz|13123456-7
 Curso de Introduccion a la Programacion;2024-11-07;Ninguno|00000000-0
 Completada;2025-02-22;Ignacio Matus de la Parra|21747952-K
