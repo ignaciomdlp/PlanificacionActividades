@@ -386,8 +386,7 @@ public class Ventana extends JFrame {
         
         Encargado encargado = actividad.getEncargado();
         if (encargado != null) {
-            sb.append("Encargado: ").append(encargado.getName())
-              .append(" | ").append(encargado.getRut()).append("\n");
+            sb.append("Encargado: ").append(encargado.presentarse()).append("\n");
         } else {
             sb.append("Encargado: No asignado\n");
         }
@@ -397,8 +396,8 @@ public class Ventana extends JFrame {
         if (participantes.isEmpty()) {
             sb.append("- No hay participantes registrados\n");
         } else {
-            for (Persona p : participantes) {
-                sb.append("- ").append(p.getName()).append(" | ").append(p.getRut()).append("\n");
+            for (Participante p : participantes) {
+                sb.append(p.presentarse()).append("\n");
             }
         }
         return sb.toString();

@@ -4,7 +4,7 @@ public class Participante extends Persona {
     }
 
     @Override
-    public String getName() {
-        return "(P)" + getName();
+    public String presentarse() {
+        return "- (P) " + getName() + " - " + getRut();
     }
 }

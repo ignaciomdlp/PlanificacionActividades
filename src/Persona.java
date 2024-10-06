@@ -14,6 +14,10 @@ public class Persona {
             throw new IllegalArgumentException("Formato de RUT inválido. Debe ser en el formato 00000000-0.");
         }
     }
+
+    public String presentarse() {
+        return nombre + " - " + rut;
+    }
     
     public String getName() {
         return nombre;

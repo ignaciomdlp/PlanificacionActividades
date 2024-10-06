@@ -5,7 +5,7 @@ public class Encargado extends Persona {
     }
 
     @Override
-    public String getName() {
-        return "(P)";
+    public String presentarse() {
+        return "(E) " + getName() + " - " + getRut();
     }
 }
