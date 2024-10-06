@@ -195,6 +195,9 @@ public class Ventana extends JFrame {
         
         JButton btnCambiarNombre = new JButton("Cambiar nombre");
         btnCambiarNombre.setFont(new Font("times new roman", Font.PLAIN, 15));
+
+        JButton btnCambiarFecha = new JButton("Cambiar fecha");
+        btnCambiarFecha.setFont(new Font("times new roman", Font.PLAIN, 15));
         
         JButton btnAñadirEncargado = new JButton("Añadir encargado");
         btnAñadirEncargado.setFont(new Font("times new roman", Font.PLAIN, 15));
@@ -219,9 +222,13 @@ public class Ventana extends JFrame {
         });
         btnEliminarPersona.addActionListener(e -> eliminarPersonaActividad(nombreActividad));
         btnVolver.addActionListener(e -> modificarActividad());
+
+        btnCambiarFecha.addActionListener(e -> {
+        });
         
         panel.add(new JLabel("Opciones de modificación para: " + nombreActividad));
         panel.add(btnCambiarNombre);
+        panel.add(btnCambiarFecha);
         panel.add(btnAñadirEncargado);
         panel.add(btnAñadirParticipante);
         panel.add(btnEliminarPersona);
@@ -345,6 +352,7 @@ public class Ventana extends JFrame {
     private String actividadToString(Actividad actividad) {
         StringBuilder sb = new StringBuilder();
         sb.append("Actividad: ").append(actividad.getActName()).append("\n");
+        sb.append("Fecha de Inicio: ").append(actividad.getFechaInicio()).append("\n");
         sb.append("Encargado: ").append(actividad.getEncargado().getName())
           .append(" | ").append(actividad.getEncargado().getRut()).append("\n");
         sb.append("Participantes:\n");

@@ -8,7 +8,6 @@ public final class Actividad {
     private static final int capacidadMaxima = 10;
     private LocalDate fechaInicio;
 
-
     public Actividad(String nombreActividad, Encargado encargado) {
         this.nombreActividad = nombreActividad;
         this.encargado = encargado;
@@ -55,6 +54,10 @@ public final class Actividad {
             throw new FechaInvalidaException("La fecha de inicio " + fechaInicio + " ya ha pasado. Seleccione una fecha futura.");
         }
         this.fechaInicio = fechaInicio; // Asignar la fecha si es válida
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
     }
     
     public Encargado getEncargado() {
