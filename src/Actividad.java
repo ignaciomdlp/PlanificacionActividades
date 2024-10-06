@@ -4,6 +4,7 @@ public final class Actividad {
     private String nombreActividad;
     private Persona encargado;
     private ArrayList<Persona> participantes;
+    private static final int capacidadMaxima = 10;
 
     public Actividad(String nombreActividad, Persona encargado) {
         this.nombreActividad = nombreActividad;
@@ -19,7 +20,11 @@ public final class Actividad {
 
     public void mostrarInfo() {
         System.out.println("\nActividad: " + nombreActividad);
-        System.out.println("Encargado: " + encargado.getName() + " | " + encargado.getRut());
+        if (encargado != null) {
+            System.out.println("Encargado: " + encargado.getName() + " | " + encargado.getRut());
+        } else {
+            System.out.println("Encargado: Ninguno");
+        }
         System.out.println("Participantes:");
         for (Persona p : participantes) {
             System.out.println("- " + p.getName() + " | " + p.getRut());
@@ -54,11 +59,22 @@ public final class Actividad {
         this.encargado = null;
     }
 
-    public void addParticipante(Persona persona) {
+    public void addParticipante(Persona persona) throws CapacidadMaximaExcedidaException {
+        if (participantes.size() >= capacidadMaxima) {
+            throw new CapacidadMaximaExcedidaException(
+                "No se puede añadir al participante " + persona.getName() + 
+                ". Capacidad máxima de " + capacidadMaxima + " participantes alcanzada en la actividad " + nombreActividad + "."
+            );
+        }
         participantes.add(persona);
     }
     
+    
     public void delPartipante(Persona persona){
         participantes.remove(persona);
+    }
+
+    public static int getCapacidadMaxima() {
+        return capacidadMaxima;
     }
 }

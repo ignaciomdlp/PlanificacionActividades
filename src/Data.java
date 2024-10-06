@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Data {
     
-    public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException {
+    public static void leerDataActividad(HashMap<String, Actividad> mapa) throws IOException,CapacidadMaximaExcedidaException{
         // Use absolute paths for debugging purposes
         String filePathAct = "src/archivoActividades.txt";
         String filePathPart = "src/archivoParticipantes.txt";

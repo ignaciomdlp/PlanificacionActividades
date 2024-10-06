@@ -20,7 +20,7 @@ public class Funciones {
         }
     }
 
-    public static void addActividad(BufferedReader reader, HashMap<String, Actividad> parExistentes) throws IOException {
+    public static void addActividad(BufferedReader reader, HashMap<String, Actividad> parExistentes) throws IOException,CapacidadMaximaExcedidaException {
         limpiarConsola();
         System.out.println("Ingrese un nombre para la Actividad:");
         String entradaActividad = reader.readLine();
@@ -74,18 +74,27 @@ public class Funciones {
     
                 System.out.println("Ingrese el rut del participante:");
                 String rutParticipante = reader.readLine();
-    
+                Persona nuevoParticipante = null;
                 try {
-                    Persona P0 = new Persona(participante, rutParticipante);
-                    ACTX.addParticipante(P0);
+                    nuevoParticipante = new Persona(participante, rutParticipante); // Intentar crear la Persona
+                    ACTX.addParticipante(nuevoParticipante); // Intentar agregar el participante
                     System.out.println("Participante añadido con éxito");
                 } catch (IllegalArgumentException e) {
                     System.out.println("RUT inválido. Debe ser en el formato 00000000-0. Intente nuevamente.");
+                } catch (CapacidadMaximaExcedidaException e) {
+                    System.out.println(e.getMessage()); // Mensaje sobre capacidad máxima alcanzada
+                    continuar = false; // Termina el ciclo si se alcanza la capacidad
                 }
     
-                System.out.println("¿Deseas agregar otro participante? (Y/N)");
-                aux = reader.readLine().toLowerCase();
-                continuar = aux.equals("y");
+                // Solo preguntar si desea añadir otro participante si no se ha alcanzado la capacidad máxima
+                if (ACTX.getParticipantes().size() < Actividad.getCapacidadMaxima()) {
+                    System.out.println("¿Deseas agregar otro participante? (Y/N)");
+                    continuar = reader.readLine().equalsIgnoreCase("y");
+                } else {
+                    System.out.println("La actividad ha alcanzado su capacidad máxima de participantes.");
+                    continuar = false; // Termina el ciclo si ya se alcanzó la capacidad
+                }
+                
             }
         }
     
@@ -110,7 +119,7 @@ public class Funciones {
         }
     }
 
-    public static void modActividad(BufferedReader reader, HashMap<String, Actividad> parExistentes) throws IOException 
+    public static void modActividad(BufferedReader reader, HashMap<String, Actividad> parExistentes) throws IOException,CapacidadMaximaExcedidaException
     {
         listarActividades(parExistentes);
         if (parExistentes.isEmpty()) return;
@@ -152,13 +161,15 @@ public class Funciones {
                     String nombreParticipante = reader.readLine();
                     System.out.println("Ingrese el rut del participante:");
                     String rutParticipante = reader.readLine();
-    
                     try {
                         Persona P0 = new Persona(nombreParticipante, rutParticipante);
                         act.addParticipante(P0);
                         System.out.println("Participante añadido con éxito");
                     } catch (IllegalArgumentException e) {
                         System.out.println("RUT inválido. Debe ser en el formato 00000000-0. Intente nuevamente.");
+                    } catch (CapacidadMaximaExcedidaException e){
+                        System.out.println(e.getMessage());
+                        System.out.println("No se puede añadir más participantes, se ha alcanzado la capacidad máxima.");
                     }
                 }
                 case 4 -> {
