@@ -61,28 +61,26 @@ public class Ventana extends JFrame {
     private void mostrarEstadisticas() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
+    
         JTextArea areaTexto = new JTextArea(20, 40);
         areaTexto.setFont(new Font("times new roman", Font.PLAIN, 14));
         areaTexto.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(areaTexto);
-        
+    
         double mediaParticipantes = Funciones.calcularMediaParticipantes(mapaActividades);
         String rangoFecha = Funciones.obtenerRangoFecha(mapaActividades);
-        
+    
         areaTexto.append(String.format("Media de participantes por actividad: %.2f\n\n", mediaParticipantes));
-        areaTexto.append(String.format("Rango de fechas de las actividades:\n", rangoFecha));
-
-        
+        areaTexto.append("Rango de fechas de las actividades:\n" + rangoFecha); 
+    
         JButton btnVolver = new JButton("Volver");
         btnVolver.addActionListener(e -> mostrarPanelPrincipal());
-        
+    
         panel.add(scrollPane);
         panel.add(btnVolver);
-        
+    
         cambiarPanel(panel);
     }
-
     private void mostrarActividades() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
