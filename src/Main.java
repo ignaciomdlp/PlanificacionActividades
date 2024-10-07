@@ -11,7 +11,6 @@ public class Main {
                 HashMap<String, Actividad> mapaActividades = new HashMap<>();
                 Data.leerDataActividad(mapaActividades);
                 
-                // Inicializar el Stack para guardar los cambios
                 Stack<String> cambios = new Stack<>();
                 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -19,7 +18,6 @@ public class Main {
                 Ventana v = new Ventana(mapaActividades, reader, cambios);
                 v.setVisible(true);
                 
-                // Agregar un shutdown hook para guardar los cambios al cerrar la aplicación
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     try {
                         guardarCambios(cambios);

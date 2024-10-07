@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.Collections;
 
 public class Funciones {
 
@@ -268,6 +272,44 @@ public class Funciones {
         } else {
             System.out.println("Nombre inválido.");
         }
-    }}
+    }
+
+    public static double calcularMediaParticipantes(HashMap<String, Actividad> mapaActividades) {
+        if (mapaActividades.isEmpty()) {
+            return 0;
+        }
+
+        double suma = 0;
+        Set<String> keys = mapaActividades.keySet();
+        for (String key : keys) {
+            ArrayList<Participante> aux = mapaActividades.get(key).getParticipantes();
+            suma += aux.size();
+        }
+
+        return suma / mapaActividades.size();
+    }
+
+    public static String obtenerRangoFecha(Map<String, Actividad> mapa) {
+        if (mapa.isEmpty()) {
+            return "No hay actividades.";
+        }
+        
+        ArrayList<LocalDate> fechasActividades = new ArrayList<>();
     
+        for (Actividad actividad : mapa.values()) {
+            LocalDate fechaInicio = actividad.getFechaInicio();
+            if (fechaInicio != null) {
+                fechasActividades.add(fechaInicio);
+            }
+        }
     
+        if (fechasActividades.isEmpty()) {
+            return "Ninguna actividad tiene fecha de inicio establecida.";
+        }
+    
+        LocalDate menor = Collections.min(fechasActividades);
+        LocalDate mayor = Collections.max(fechasActividades);
+    
+        return "Las fechas de las actividades van desde " + menor.toString() + " hasta " + mayor.toString();
+    }
+}

@@ -8,13 +8,11 @@ import java.util.*;
 
 public class Ventana extends JFrame {
     private HashMap<String, Actividad> mapaActividades;
-    private BufferedReader reader;
     private JPanel panelActual;
     private Stack<String> cambios;
 
     public Ventana(HashMap<String, Actividad> mapaActividades, BufferedReader reader, Stack<String> cambios) {
         this.mapaActividades = mapaActividades;
-        this.reader = reader;
         this.cambios = cambios;
         
         setTitle("---|Gestor de Actividades de Universidad|---");
@@ -34,11 +32,14 @@ public class Ventana extends JFrame {
         btnMostrar.setFont(new Font("times new roman", Font.PLAIN, 15));
         JButton btnGestionar = new JButton("Gestionar Actividades");
         btnGestionar.setFont(new Font("times new roman", Font.PLAIN, 15));
+        JButton btnEstadisticas = new JButton("Mostrar Estadísticas");
+        btnEstadisticas.setFont(new Font("times new roman", Font.PLAIN, 15));
         JButton btnSalir = new JButton("Salir");
         btnSalir.setFont(new Font("times new roman", Font.PLAIN, 15));
         
         btnMostrar.addActionListener(e -> mostrarActividades());
         btnGestionar.addActionListener(e -> mostrarMenuGestion());
+        btnEstadisticas.addActionListener(e -> mostrarEstadisticas());
         btnSalir.addActionListener(e -> {
             try {
                 Data.guardarDatos(mapaActividades);
@@ -51,7 +52,33 @@ public class Ventana extends JFrame {
         panel.add(titulo);
         panel.add(btnMostrar);
         panel.add(btnGestionar);
+        panel.add(btnEstadisticas);
         panel.add(btnSalir);
+        
+        cambiarPanel(panel);
+    }
+
+    private void mostrarEstadisticas() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+        JTextArea areaTexto = new JTextArea(20, 40);
+        areaTexto.setFont(new Font("times new roman", Font.PLAIN, 14));
+        areaTexto.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(areaTexto);
+        
+        double mediaParticipantes = Funciones.calcularMediaParticipantes(mapaActividades);
+        String rangoFecha = Funciones.obtenerRangoFecha(mapaActividades);
+        
+        areaTexto.append(String.format("Media de participantes por actividad: %.2f\n\n", mediaParticipantes));
+        areaTexto.append(String.format("Rango de fechas de las actividades:\n", rangoFecha));
+
+        
+        JButton btnVolver = new JButton("Volver");
+        btnVolver.addActionListener(e -> mostrarPanelPrincipal());
+        
+        panel.add(scrollPane);
+        panel.add(btnVolver);
         
         cambiarPanel(panel);
     }
