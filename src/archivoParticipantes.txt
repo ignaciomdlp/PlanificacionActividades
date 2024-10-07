@@ -1,2 +1,3 @@
+Manuel Cabello|21432108-4;Jose Canales|21345678-K;Ignacio Matus de la Parra|21358467-0
 Manuel Cabello|21432108-4
 Benjamin Leiva|21396737-9;Manuel Cabello|21432108-4;Jose Canales|21765738-6

@@ -1,3 +1,4 @@
 Registro de cambios:
 
-Se eliminó la actividad: Taller de Ingenieria
+Se añadieron participantes a la actividad: Taller de Programación
+Se añadió la actividad: Taller de Programación

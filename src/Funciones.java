@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.Collections;
 
 public class Funciones {
@@ -20,9 +19,9 @@ public class Funciones {
         if (mapaActividades.isEmpty()) {
             System.out.println("No hay actividades registradas.");
         } else {
-            for (Actividad actividad : mapaActividades.values()) {
+            //for (Actividad actividad : mapaActividades.values()) {
                 //actividad.mostrarInfo(); // Utiliza el método mostrarInfo() para imprimir detalles
-            }
+            //}
         }
     }
 

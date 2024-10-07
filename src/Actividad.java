@@ -86,6 +86,10 @@ public final class Actividad {
         }
         participantes.add(participante);
     }
+
+    public void addParticipante(ArrayList<Participante> listPart) throws CapacidadMaximaExcedidaException {
+        for (Participante participante : listPart) {addParticipante(participante);}
+    }
     
     
     public void delParticipante(Participante participante){

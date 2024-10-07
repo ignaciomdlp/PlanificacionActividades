@@ -317,19 +317,32 @@ public class Ventana extends JFrame {
 
     private void añadirParticipanteActividad(String nombreActividad) {
         Actividad actividad = mapaActividades.get(nombreActividad);
-        String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del participante:");
-        String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del participante:");
-        if (nombre != null && !nombre.isEmpty() && rut != null && !rut.isEmpty()) {
-            try {
-                Participante participante = new Participante(nombre, rut);
-                actividad.addParticipante(participante);
-                JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
-                cambios.push("Se añadió el participante: " + nombre + " a la actividad: " + nombreActividad); // Registrar cambio
-            } catch (CapacidadMaximaExcedidaException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, "RUT inválido. Debe ser en el formato 00000000-0.");
+        ArrayList<Participante> participantesAñadidos = new ArrayList<>();
+    
+        do {
+            String nombre = JOptionPane.showInputDialog(this, "Ingrese el nombre del participante:");
+            String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del participante:");
+            
+            if (nombre != null && !nombre.isEmpty() && rut != null && !rut.isEmpty()) {
+                try {
+                    Participante participante = new Participante(nombre, rut);
+                    participantesAñadidos.add(participante);
+                    JOptionPane.showMessageDialog(this, "Participante añadido con éxito");
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, "RUT inválido. Debe ser en el formato 00000000-0.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos");
             }
+            
+        } while (JOptionPane.showConfirmDialog(this, "¿Desea añadir otro participante?", "Añadir Participante", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+    
+        try {
+            actividad.addParticipante(participantesAñadidos);
+            JOptionPane.showMessageDialog(this, "Participantes añadidos con éxito");
+            cambios.push("Se añadieron participantes a la actividad: " + nombreActividad); // Registrar cambio
+        } catch (CapacidadMaximaExcedidaException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
 
@@ -422,7 +435,7 @@ public class Ventana extends JFrame {
         
         Encargado encargado = actividad.getEncargado();
         if (encargado != null) {
-            sb.append("Encargado: ").append(encargado.presentarse()).append("\n");
+            sb.append("Encargado: ").append(encargado.presentarse("Don/a")).append("\n");
         } else {
             sb.append("Encargado: No asignado\n");
         }
